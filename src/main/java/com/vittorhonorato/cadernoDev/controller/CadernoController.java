@@ -23,6 +23,11 @@ public class CadernoController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("all-cadernos")
+    public ResponseEntity<?> getAllCadernos() {
+        return ResponseEntity.ok(cadernoService.getAllCaderno());
+    }
+
     @PostMapping
     public ResponseEntity<CadernoResponseDTO> postCaderno(@Valid @RequestBody CadernoRequestDTO cadernoRequestDTO) {
         CadernoResponseDTO response = cadernoService.postCaderno(cadernoRequestDTO);

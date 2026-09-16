@@ -7,6 +7,8 @@ import com.vittorhonorato.cadernoDev.repository.CadernoRepository;
 import com.vittorhonorato.cadernoDev.service.CadernoService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CadernoServiceImpl implements CadernoService {
     private final CadernoRepository cadernoRepository;
@@ -21,6 +23,13 @@ public class CadernoServiceImpl implements CadernoService {
                 .orElseThrow(() -> new RuntimeException("Caderno not found with id: " + id));
 
         return new CadernoResponseDTO(caderno.getId(), caderno.getNome(), caderno.getResumo());
+    }
+
+    @Override
+    public List<CadernoResponseDTO> getAllCaderno() {
+        return cadernoRepository.findAll().stream()
+                .map(caderno -> new CadernoResponseDTO(caderno.getId(), caderno.getNome(), caderno.getResumo()))
+                .toList();
     }
 
     @Override
