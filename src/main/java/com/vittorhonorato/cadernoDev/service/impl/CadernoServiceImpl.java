@@ -1,0 +1,37 @@
+package com.vittorhonorato.cadernoDev.service.impl;
+
+import com.vittorhonorato.cadernoDev.dto.CadernoRequestDTO;
+import com.vittorhonorato.cadernoDev.dto.CadernoResponseDTO;
+import com.vittorhonorato.cadernoDev.entity.Caderno;
+import com.vittorhonorato.cadernoDev.repository.CadernoRepository;
+import com.vittorhonorato.cadernoDev.service.CadernoService;
+import org.springframework.stereotype.Service;
+
+@Service
+public class CadernoServiceImpl implements CadernoService {
+    private final CadernoRepository cadernoRepository;
+
+    public CadernoServiceImpl(CadernoRepository cadernoRepository) {
+        this.cadernoRepository = cadernoRepository;
+    }
+
+    @Override
+    public CadernoResponseDTO getCaderno(Long id) {
+        Caderno caderno = cadernoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Caderno not found with id: " + id));
+
+        return new CadernoResponseDTO(caderno.getId(), caderno.getNome(), caderno.getResumo());
+    }
+
+    @Override
+    public CadernoResponseDTO postCaderno(CadernoRequestDTO cadernoRequestDTO) {
+        Caderno caderno = new Caderno();
+
+        caderno.setNome(cadernoRequestDTO.nome());
+        caderno.setResumo(cadernoRequestDTO.resumo());
+
+        cadernoRepository.save(caderno);
+
+        return new CadernoResponseDTO(caderno.getId(), caderno.getNome(), caderno.getResumo());
+    }
+}
